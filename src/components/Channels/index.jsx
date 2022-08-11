@@ -1,20 +1,28 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import ChannelsList from './ChannelsList';
+import getChannels from '../../store/actions/channels';
 
-const Channels = () => (
-  <ul className="list-group">
-    <li className="list-group-item">
-      Laravel
-    </li>
-    <li className="list-group-item">
-      Angular
-    </li>
-    <li className="list-group-item">
-      Vuejs
-    </li>
-    <li className="list-group-item">
-      Web development
-    </li>
-  </ul>
-);
 
-export default Channels;
+
+class ChannelsContainer extends React.Component {
+  componentWillMount() {
+    this.props.getChannels();
+  }
+
+  render() {
+    return <ChannelsList channels={this.props.channels} />;
+  }
+}
+
+const mapStateToProps = state => ({
+  channels: state.channels
+});
+
+const mapDispatchToProps = dispatch => ({
+  getChannels: () => {
+    dispatch(getChannels())
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChannelsContainer);
